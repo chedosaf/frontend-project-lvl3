@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '14'
           check-latest: true
-      - run: make install-deps
+      - run: make install
       
       - name: Run eslint
         run: make lint
