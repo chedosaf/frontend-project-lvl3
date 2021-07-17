@@ -5,7 +5,6 @@
 
 <a href="https://codeclimate.com/github/chedosaf/frontend-project-lvl3/test_coverage"><img src="https://api.codeclimate.com/v1/badges/581678801c375a3169da/test_coverage" /></a><br>
 
-<a href="https://github.com/chedosaf/frontend-project-lvl3/actions/workflows/lint-check.yml"><img src="https://github.com/chedosaf/frontend-project-lvl3/workflows/lint/badge.svg"/></a><br>
 
 <a href="https://github.com/chedosaf/frontend-project-lvl3/actions/workflows/lint.yml"><img src="https://github.com/chedosaf/frontend-project-lvl3/actions/workflows/lint.yml/badge.svg"></a><br>
 
