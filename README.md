@@ -9,4 +9,4 @@
 
 <a href="https://github.com/chedosaf/frontend-project-lvl3/actions/workflows/lint.yml"><img src="https://github.com/chedosaf/frontend-project-lvl3/actions/workflows/lint.yml/badge.svg"></a><br>
 
-<a href="https://frontend-project-lvl3-alpha.vercel.app"></a><br>q
+<a href="https://frontend-project-lvl3-sigma-ivory.vercel.app/"></a><br>
