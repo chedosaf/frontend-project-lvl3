@@ -5,17 +5,16 @@ export default (xmlData) => {
     const title = feedTitle.textContent;
     const feedDescription = text.querySelector('description');
     const description = feedDescription.textContent;
-    const extractPost = (post) => {
+  
+    const postsNodes = text.querySelectorAll('item');
+    const posts = [...postsNodes].map((post) => {
       const titleNode = post.querySelector('title');
       const linkNode = post.querySelector('link');
       return {
         title: titleNode.textContent,
         link: linkNode.textContent,
       };
-    };
-  
-    const postsNodes = text.querySelectorAll('item');
-    const posts = [...postsNodes].map(extractPost);
+    });
     const result = {
       title,
       description,
