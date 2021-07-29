@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '14'
           check-latest: true
-      - run: make install
+      - run: npm install
       
       - name: Run eslint
-        run: make lint
+        run: npx eslint .
