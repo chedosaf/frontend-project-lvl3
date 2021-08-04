@@ -7,7 +7,7 @@ const elements = {
   form: document.getElementById('form'),
 };
 
-form.addEventListener('submit', (e) => {
+elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
     console.log(e.target);
 });
