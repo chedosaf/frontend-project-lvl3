@@ -12,22 +12,31 @@ const state = {
       valid: false,
       errors: {},
     },
-    feeds: '...', // продумать хранение
-    posts: '...', //
+    feeds: [],
+    posts: [],
   };
 
-const validate = (input) => {
-  const errors = {};
-  
-  if (wasAdded) { // продумать wasAdded
-      errors.wasAdded = 'Url was added before!';
-  } if (!schema.isValidSync(fields)) {
-      errors.valid = 'Url invalid'
-  } return errors;
+const validate = (fields) => {
+    try {
+      schema.validateSync(fields, { abortEarly: false });
+      return {};
+    } catch (e) {
+      return _.keyBy(e.inner, 'path');
+    }
 };
 
+const watchedState = onChange(state, (path, value) => {
+    if (path === 'form.valid') {
+      if (value === 'true') {
+        console.log('!!!!!!!!!!!!');
+      }
+    }
+});
+
 export default (input) => {
-    const errors = validate(input);
-    const valid = _.isEqual(errors, {});
-    return { errors, valid};
-}
+    if (JSON.stringify(validate(input)) === JSON.stringify({})) {
+        state.form.valid = 'true';
+    }
+};
+
+console.log("hccycyyg");
