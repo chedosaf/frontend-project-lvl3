@@ -10,7 +10,8 @@ const form = forms[0];
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    console.log(e.target.value);
+    const formData = new FormData(e.target)
+    console.log(formData);
   });
 
 
