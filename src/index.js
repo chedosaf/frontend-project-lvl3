@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const form = document.forms[0];
 const submit = form.getElementsById('submitButton');
-console.log(submit);
+console.log(form);
 
 submit.addEventListener('submit', (e) => {
     e.preventDefault();
