@@ -9,6 +9,6 @@ const elements = {
 
 elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
-    console.log(e.target.value);
+    console.log(e.target);
 });
 
