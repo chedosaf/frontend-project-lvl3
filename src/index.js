@@ -11,7 +11,7 @@ const form = forms[0];
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target)
-    console.log(formData);
+    console.log(formData.get('url'));
   });
 
 
