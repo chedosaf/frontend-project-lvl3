@@ -1,14 +1,13 @@
 import '../template.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const elements = {
-  form: document.getElementsByClassName('rss-form'),
-};
 
-console.log(elements.form);
+const form = document.forms[0];
+const submit = form.getElementsById('submitButton');
+console.log(submit);
 
-elements.form.addEventListener('submit', (e) => {
+submit.addEventListener('submit', (e) => {
     e.preventDefault();
-    console.log(e.target);
+    console.log(e.target.value);
 });
 
