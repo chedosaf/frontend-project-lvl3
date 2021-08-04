@@ -4,7 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const forms = document.getElementsByClassName('rss-form');
 
-const form = form[0];
+const form = forms[0];
+
+// const button = form.getElementsById('submitButton');
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
