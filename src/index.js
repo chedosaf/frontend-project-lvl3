@@ -35,7 +35,10 @@ form.addEventListener('submit', (e) => {
     if (response.ok) return response.json()
     throw new Error('Network response was not ok.')
   })
-  .then(data => console.log(data));
+  .then((data) => {
+      const parsedData = parse(data.contents);
+      console.log(parsedData.posts);
+    });
       
 });
 
