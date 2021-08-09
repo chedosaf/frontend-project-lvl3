@@ -32,9 +32,9 @@ form.addEventListener('submit', (e) => {
 
   fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(formData.get('url'))}`)
     .then((resp) => {
-        const parsedData = parse(resp.data);
-        state.posts.push(parsedData.posts);
-        console.log(state.posts);
+        // const parsedData = parse(resp.data);
+        // state.posts.push(parsedData.posts);
+        console.log(resp);
     });
       
 });
