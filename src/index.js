@@ -19,7 +19,14 @@ const forms = document.getElementsByClassName('rss-form');
 
 const form = forms[0];
 
-// const button = form.getElementsById('submitButton');
+
+
+const makeFeed = (parsedData) => ({
+    id: parsedData.link,
+    title: parsedData.title,
+    description: parsedData.description,
+  });
+  
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -37,7 +44,8 @@ form.addEventListener('submit', (e) => {
   })
   .then((data) => {
       const parsedData = parse(data.contents);
-      console.log(parsedData.posts);
+      const feed = makeFeed(parsedData);
+      console.log(feed);
     });
       
 });
