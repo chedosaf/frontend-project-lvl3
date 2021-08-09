@@ -20,6 +20,7 @@ const forms = document.getElementsByClassName('rss-form');
 const form = forms[0];
 
 
+const addIdToPost = (id) => (post) => ({ ...post, feedId: id });
 
 const makeFeed = (url, parsedData) => ({
     id: url,
@@ -45,8 +46,10 @@ form.addEventListener('submit', (e) => {
   .then((data) => {
       const parsedData = parse(data.contents);
       const feed = makeFeed(formData.get('url'), parsedData);
-      console.log(feed);
-    });
+      state.feeds.push(feed);
+      const feedPosts = parsedData.posts.map(addIdToPost(feed.id));
+      console.log(feedPosts);
+  });
       
 });
 
