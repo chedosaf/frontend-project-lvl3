@@ -1,6 +1,6 @@
 import '../template.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import parser from '../parser.js';
+import parser from './parser';
 
 const state = {
     form: {
