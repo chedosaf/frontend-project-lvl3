@@ -21,8 +21,8 @@ const form = forms[0];
 
 
 
-const makeFeed = (parsedData) => ({
-    id: parsedData.link,
+const makeFeed = (url, parsedData) => ({
+    id: url,
     title: parsedData.title,
     description: parsedData.description,
   });
@@ -44,7 +44,7 @@ form.addEventListener('submit', (e) => {
   })
   .then((data) => {
       const parsedData = parse(data.contents);
-      const feed = makeFeed(parsedData);
+      const feed = makeFeed(formData.get('url'), parsedData);
       console.log(feed);
     });
       
