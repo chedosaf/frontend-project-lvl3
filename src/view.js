@@ -41,5 +41,6 @@ export default (state, element) => {
     const feed = createFeed({ title, description });
     element.append(feed);
   });
-  console.log('1');
+  const posts = createPosts(state.posts);
+  element.append(posts);
 };
