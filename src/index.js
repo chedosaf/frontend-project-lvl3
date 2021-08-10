@@ -1,6 +1,7 @@
 import '../template.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import parse from './parser';
+import view from './view';
 
 const state = {
   form: {
@@ -18,6 +19,8 @@ const state = {
 const forms = document.getElementsByClassName('rss-form');
 
 const form = forms[0];
+
+const feeds = document.getElementsByClassName('feeds');
 
 const addIdToPost = (id) => (post) => ({ ...post, feedId: id });
 
@@ -42,5 +45,6 @@ form.addEventListener('submit', (e) => {
       state.posts.push(...feedPosts);
       console.log(parsedData.posts);
       console.log(state.feeds);
+      view(state, feeds);
     });
 });
