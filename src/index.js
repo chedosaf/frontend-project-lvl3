@@ -40,7 +40,7 @@ form.addEventListener('submit', (e) => {
       state.feeds.push(feed);
       const feedPosts = parsedData.posts.map(addIdToPost(feed.id));
       state.posts.push(...feedPosts);
-      console.log(state.posts);
+      console.log(parsedData.posts);
       console.log(state.feeds);
     });
 });
