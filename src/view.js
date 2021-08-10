@@ -40,6 +40,6 @@ export default (state, element) => {
   state.feeds.forEach(({ title, description }) => {
     const feed = createFeed({ title, description });
     element.append(feed);
-    console.log('1');
   });
+  console.log('1');
 };
