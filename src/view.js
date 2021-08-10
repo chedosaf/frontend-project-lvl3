@@ -7,6 +7,8 @@ const createPost = (title, href) => {
   const button = document.createElement('button');
   button.setAttribute('type', 'button');
   button.classList.add('btn', 'btn-primary');
+  const buttonText = document.createTextNode('Просмотр');
+  button.append(buttonText);
   a.setAttribute('href', href);
   a.setAttribute('target', '_blank');
   a.append(linkText);
