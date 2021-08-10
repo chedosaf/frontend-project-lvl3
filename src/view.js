@@ -4,10 +4,14 @@ const createPost = (title, href) => {
   const li = document.createElement('li');
   const a = document.createElement('a');
   const linkText = document.createTextNode(title);
+  const button = document.createElement('button');
+  button.setAttribute('type', 'button');
+  button.classList.add('btn', 'btn-primary');
   a.setAttribute('href', href);
   a.setAttribute('target', '_blank');
   a.append(linkText);
   li.append(a);
+  li.append(button);
   return li;
 };
 
@@ -44,3 +48,4 @@ export default (state, elements) => {
   const posts = createPosts(state.posts);
   elements.posts.append(posts);
 };
+
