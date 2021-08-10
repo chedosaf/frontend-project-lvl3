@@ -21,6 +21,11 @@ const forms = document.getElementsByClassName('rss-form');
 const form = forms[0];
 
 const feeds = document.getElementsByClassName('feeds')[0];
+const posts = document.getElementsByClassName('posts')[0];
+const elements = {
+  feeds,
+  posts,
+};
 
 const addIdToPost = (id) => (post) => ({ ...post, feedId: id });
 
@@ -44,7 +49,6 @@ form.addEventListener('submit', (e) => {
       const feedPosts = parsedData.posts.map(addIdToPost(feed.id));
       state.posts.push(...feedPosts);
       console.log(parsedData.posts);
-      console.log(feeds);
-      view(state, feeds);
+      view(state, elements);
     });
 });

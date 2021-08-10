@@ -36,11 +36,11 @@ const createFeed = ({ title, description }) => {
   return section;
 };
 
-export default (state, element) => {
+export default (state, elements) => {
   state.feeds.forEach(({ title, description }) => {
     const feed = createFeed({ title, description });
-    element.append(feed);
+    elements.feeds.append(feed);
   });
   const posts = createPosts(state.posts);
-  element.append(posts);
+  elements.posts.append(posts);
 };
