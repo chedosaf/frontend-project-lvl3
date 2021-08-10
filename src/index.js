@@ -20,7 +20,7 @@ const forms = document.getElementsByClassName('rss-form');
 
 const form = forms[0];
 
-const feeds = document.getElementsByClassName('feeds');
+const feeds = document.getElementsByClassName('feeds')[0];
 
 const addIdToPost = (id) => (post) => ({ ...post, feedId: id });
 
