@@ -1,4 +1,4 @@
-import onChange from 'on-change';
+import onСhange from 'on-change';
 
 const createPost = (title, href) => {
   const li = document.createElement('li');
@@ -42,12 +42,10 @@ const createFeed = ({ title, description }) => {
 };
 
 export default (state, elements) => {
-  const watchedState = onChange(state, () => {
-    state.feeds.forEach(({ title, description }) => {
-      const feed = createFeed({ title, description });
-      elements.feeds.append(feed);
-    });
-    const posts = createPosts(state.posts);
-    elements.posts.append(posts);
+  state.feeds.forEach(({ title, description }) => {
+    const feed = createFeed({ title, description });
+    elements.feeds.append(feed);
   });
+  const posts = createPosts(state.posts);
+  elements.posts.append(posts);
 };
