@@ -49,7 +49,7 @@ form.addEventListener('submit', (e) => {
       const feedPosts = parsedData.posts.map(addIdToPost(feed.id));
       state.posts.push(...feedPosts);
       console.log(parsedData.posts);
-      console.log(feedPosts);
+      // console.log(feedPosts);
       view(state, elements);
     });
 });
