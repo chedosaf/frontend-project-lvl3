@@ -1,8 +1,14 @@
-import _ from 'lodash';
 import * as yup from 'yup';
 
-const schema = yup.string().url();
+export default (fields, feedsIds) => {
+  const schema = yup.string() // yup.setLocale()
+    .url()
+    .notOneOf(feedsIds).required();
+  try {
+    schema.validateSync(fields, { abortEarly: false });
 
-const validate = (input) => {
-
+    return null;
+  } catch (e) {
+    return e.errors[0].key;
+  }
 };
