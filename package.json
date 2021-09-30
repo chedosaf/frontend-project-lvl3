@@ -4,7 +4,13 @@
   "description": "third proj",
   "main": "src/init.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest"
+  },
+  "jest":{
+    "moduleNameMapper":{
+         "\\.(css|less|scss|sass)$": "identity-obj-proxy" 
+    },
+    "testEnvironment": "jsdom"
   },
   "repository": {
     "type": "git",
@@ -18,7 +24,10 @@
   "homepage": "https://github.com/chedosaf/frontend-project-lvl3#readme",
   "devDependencies": {
     "@babel/core": "^7.14.6",
-    "@babel/preset-env": "^7.14.7",
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
+    "@babel/preset-env": "^7.15.6",
+    "@testing-library/dom": "^8.7.1",
+    "@testing-library/user-event": "^13.2.1",
     "@webpack-cli/generators": "^2.2.0",
     "babel-eslint": "^8.2.6",
     "babel-loader": "^8.2.2",
@@ -40,6 +49,7 @@
     "css-loader": "^5.2.6",
     "eslint-config-airbnb": "^18.2.1",
     "i18next": "^20.4.0",
+    "identity-obj-proxy": "^3.0.0",
     "lodash": "^4.17.21",
     "on-change": "^3.0.2",
     "style-loader": "^3.0.0",
