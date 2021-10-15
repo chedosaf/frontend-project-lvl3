@@ -7,7 +7,6 @@ import resources from './locales';
 
 const init = () => {
   yup.setLocale({
-    // use constant translation keys for messages without values
     mixed: {
       required: () => ({ key: 'required' }),
       notOneOf: () => ({ key: 'notOneOf' }),

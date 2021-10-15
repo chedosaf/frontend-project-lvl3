@@ -17,10 +17,7 @@ export default (i18nextInstance) => {
     posts: [],
   };
 
-  const forms = document.getElementsByClassName('rss-form');
-
-  const form = forms[0];
-
+  const form = document.getElementsByClassName('rss-form')[0];
   const feeds = document.getElementsByClassName('feeds')[0];
   const posts = document.getElementsByClassName('posts')[0];
   const input = document.getElementById('url-input');
@@ -47,7 +44,6 @@ export default (i18nextInstance) => {
       const promises = feedsUrls.map((res) => fetch(res));
       Promise.allSettled(promises).then((responses) => {
         responses.forEach((response, index) => {
-          console.log(response);
           if (!response.value.ok) throw new Error('Network response was not ok.');
           return response.value.json().then((json) => {
             const newFeed = parse(json.contents);
@@ -55,7 +51,6 @@ export default (i18nextInstance) => {
             const oldPosts = watchedState.posts.filter(({ feedId }) => feedId === oldFeed.id);
             const getNewPosts = (newPosts, prevPosts) => _.differenceBy(newPosts, prevPosts, 'link');
             const newPosts = getNewPosts(newFeed.posts, oldPosts).map(addIdToPost(oldFeed.id));
-            console.log(state.posts.concat(newPosts));
             watchedState.posts = state.posts.concat(newPosts);
           });
         });
@@ -74,17 +69,13 @@ export default (i18nextInstance) => {
     const formData = new FormData(e.target);
     const validateStatus = validate(formData.get('url').toLowerCase().trim(), watchedState.feeds.map((feed) => feed.id));
     if (validateStatus === null) {
-      console.log('11111111');
       watchedState.form.processState = 'processing';
     } if (validateStatus !== null) {
-      console.log(watchedState.form.valid);
       watchedState.form.error = validateStatus;
       watchedState.form.valid = false;
-      console.log(watchedState.form.valid);
       watchedState.form.processState = 'filling';
       return;
     }
-    console.log(watchedState.form.valid);
 
     fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(formData.get('url'))}`) // валидация на содержание RSS!!!
       .then((response) => {
@@ -94,13 +85,13 @@ export default (i18nextInstance) => {
         watchedState.form.error = 'netError';
         watchedState.form.processState = 'filling';
         throw new Error('Network response was not ok.');
-      }).then((data) => {
+      })
+      .then((data) => {
         const parsedData = parse(data.contents);
         if (parsedData === null) {
-          watchedState.form.error = 'Parse went wrong';
+          watchedState.form.error = 'parseError';
           watchedState.form.processState = 'filling';
           watchedState.form.valid = false;
-          console.log(watchedState.form.valid);
         } else {
           const feed = makeFeed(formData.get('url'), parsedData);
           watchedState.feeds.push(feed);
