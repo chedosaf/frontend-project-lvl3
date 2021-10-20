@@ -15,20 +15,14 @@ const index = path.join(__dirname, '..', 'index.html'); // путь
 const initHtml = fs.readFileSync(index, 'utf-8');
 
 fetchMock.get('https://hexlet-allorigins.herokuapp.com/get?url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss', hexletData);
-fetchMock.get('https://hexlet-allorigins.herokuapp.com/get?url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss', hexletData, { overwriteRoutes: false });
-fetchMock.get('https://google.com', { gg: '<rg>' });
-// const data = {
-//   ff: '200',
-// };
+// fetchMock.get('https://hexlet-allorigins.herokuapp.com/get?url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss', hexletData, { overwriteRoutes: false });
+fetchMock.get('https://hexlet-allorigins.herokuapp.com/get?url=https%3A%2F%2Fgoogle.com', { gg: '<rg>' });
+fetchMock.get('https://hexlet-allorigins.herokuapp.com/get?url=https%3A%2F%2Fyandex.ru', 404);
 
 beforeEach(async () => {
   document.body.innerHTML = initHtml;
   await init();
 });
-
-// afterEach(async () => {
-//   window.location.reload();
-// });
 
 test('empty input submit click must throw message about empty fuild', async () => {
   userEvent.click(screen.getByText('Добавить'));
@@ -37,20 +31,20 @@ test('empty input submit click must throw message about empty fuild', async () =
 });
 
 test('input not url feedback innerText', async () => {
-  userEvent.type(screen.getByLabelText('url'), 'vvv');
+  userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'vvv');
   userEvent.click(screen.getByText('Добавить'));
   expect(await screen.findByText(ru.translation.url)).toBeInTheDocument();
 });
 
 test('input valid url must seccess', async () => {
-  userEvent.type(screen.getByTestId('url'), 'https://ru.hexlet.io/lessons.rss');
+  userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
   userEvent.click(screen.getByText('Добавить'));
   expect(await screen.findByText(ru.translation.feedBack)).toBeInTheDocument();
   expect([...await screen.findAllByText(ru.translation.show)].length).toBe(11);
 });
 
 test('modal window show correctly', async () => {
-  userEvent.type(screen.getByTestId('url'), 'https://ru.hexlet.io/lessons.rss');
+  userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
   userEvent.click(screen.getByText('Добавить'));
   userEvent.click([...await screen.findAllByText(ru.translation.show)][0]);
   console.log(await screen.findByTestId('modal'));
@@ -61,17 +55,31 @@ test('modal window show correctly', async () => {
 });
 
 test('modal window don\'t show correctly', async () => {
-  userEvent.type(screen.getByTestId('url'), 'https://ru.hexlet.io/lessons.rss');
+  userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
   userEvent.click(screen.getByText('Добавить'));
   userEvent.click([...await screen.findAllByText(ru.translation.show)][0]);
   userEvent.click(await screen.getByText('Закрыть'));
   expect(await screen.findByTestId('modal')).not.toHaveClass('show');
 });
 
-// test('input valid url 2 times must show messege: "Фид был добавлен ранее"', async () => {
-//   userEvent.type(screen.getByTestId('url'), 'https://ru.hexlet.io/lessons.rss');
-//   userEvent.click(screen.getByText('Добавить'));
-//   userEvent.type(await screen.findByTestId('url'), 'https://google.com');
-//   userEvent.click(await screen.getByText('Добавить'));
-//   expect(await screen.findByText(ru.translation.notOneOf)).toBeInTheDocument();
-// });
+test('input valid url without Rss must show:"Ресурс не содержит валидный RSS"', async () => {
+  userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://google.com');
+  userEvent.click(screen.getByText('Добавить'));
+  expect(await screen.findByText(ru.translation.parseError)).toBeInTheDocument();
+});
+
+test('input valid url 2 times must show messege: "Фид был добавлен ранее"', async () => {
+  userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
+  userEvent.click(screen.getByText('Добавить'));
+  expect(await screen.findByText(ru.translation.feedBack)).toBeInTheDocument();
+  // fetchMock.get('https://hexlet-allorigins.herokuapp.com/get?url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss', hexletData, { overwriteRoutes: false });
+  userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
+  userEvent.click(screen.getByText('Добавить'));
+  expect(await screen.findByText(ru.translation.notOneOf)).toBeInTheDocument();
+});
+
+test('input valid url must jbbjbseccess', async () => {
+  userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://yandex.ru');
+  userEvent.click(screen.getByText('Добавить'));
+  expect(await screen.findByText(ru.translation.netError)).toBeInTheDocument();
+});

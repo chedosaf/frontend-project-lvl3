@@ -78,14 +78,7 @@ export default (i18nextInstance) => {
     }
 
     fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(formData.get('url'))}`) // валидация на содержание RSS!!!
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        watchedState.form.error = 'netError';
-        watchedState.form.processState = 'filling';
-        throw new Error('Network response was not ok.');
-      })
+      .then((response) => response.json())
       .then((data) => {
         const parsedData = parse(data.contents);
         if (parsedData === null) {
@@ -100,6 +93,11 @@ export default (i18nextInstance) => {
           watchedState.form.processState = 'finished';
           watchedState.form.valid = true;
         }
+      }).catch(() => {
+        watchedState.form.error = 'netError';
+        watchedState.form.processState = 'filling';
+        watchedState.form.valid = false;
+        throw new Error('Network response was not ok.');
       });
   });
 
