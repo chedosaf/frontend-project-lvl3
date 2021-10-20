@@ -72,7 +72,6 @@ test('input valid url 2 times must show messege: "Фид был добавлен
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
   userEvent.click(screen.getByText('Добавить'));
   expect(await screen.findByText(ru.translation.feedBack)).toBeInTheDocument();
-  // fetchMock.get('https://hexlet-allorigins.herokuapp.com/get?url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss', hexletData, { overwriteRoutes: false });
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
   userEvent.click(screen.getByText('Добавить'));
   expect(await screen.findByText(ru.translation.notOneOf)).toBeInTheDocument();
