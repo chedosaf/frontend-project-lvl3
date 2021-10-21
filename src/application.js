@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import fetch from 'node-fetch';
 import parse from './parser';
 import view from './view';
 import validate from './validation';
