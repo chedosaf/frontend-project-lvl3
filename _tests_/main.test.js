@@ -24,10 +24,9 @@ beforeEach(async () => {
   await init();
 });
 
-test('empty input submit click must throw message about empty fuild', async () => {
+test('empty input submit click must throw message about empty field', async () => {
   userEvent.click(screen.getByText('Добавить'));
   expect(await screen.findByText(ru.translation.required)).toBeInTheDocument();
-  console.log(await screen.getByTestId('feedback').textContent);
 });
 
 test('input not url feedback innerText', async () => {
@@ -49,12 +48,12 @@ test('modal window show correctly', async () => {
   userEvent.click([...await screen.findAllByText(ru.translation.show)][0]);
   console.log(await screen.findByTestId('modal'));
   expect(await screen.findByTestId('modal')).toBeVisible();
-  expect(await screen.findByTestId('modal-body')).toHaveTextContent('Цель: Научиться использовать сериализацию данных');
+  expect(await screen.findByText('Цель: Научиться использовать сериализацию данных')).toBeVisible();
   expect(await screen.findByTestId('modal-title')).toHaveTextContent('Jbuilder / Ruby: Полный Rails');
   expect(await screen.findByTestId('modal-footer-link')).toHaveAttribute('href', 'https://ru.hexlet.io/courses/rails-full/lessons/jbuilder/theory_unit');
 });
 
-test('modal window don\'t show correctly', async () => {
+test('modal window close show correctly', async () => {
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
   userEvent.click(screen.getByText('Добавить'));
   userEvent.click([...await screen.findAllByText(ru.translation.show)][0]);
@@ -62,7 +61,7 @@ test('modal window don\'t show correctly', async () => {
   expect(await screen.findByTestId('modal')).not.toHaveClass('show');
 });
 
-test('input valid url without Rss must show:"Ресурс не содержит валидный RSS"', async () => {
+test('input valid url without Rss must show: "Ресурс не содержит валидный RSS"', async () => {
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://google.com');
   userEvent.click(screen.getByText('Добавить'));
   expect(await screen.findByText(ru.translation.parseError)).toBeInTheDocument();
@@ -77,7 +76,7 @@ test('input valid url 2 times must show messege: "Фид был добавлен
   expect(await screen.findByText(ru.translation.notOneOf)).toBeInTheDocument();
 });
 
-test('input valid url must jbbjbseccess', async () => {
+test('must show messege: "Ошибка сети", if fetch wasn\'t ok', async () => {
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://yandex.ru');
   userEvent.click(screen.getByText('Добавить'));
   expect(await screen.findByText(ru.translation.netError)).toBeInTheDocument();
