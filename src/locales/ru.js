@@ -1,7 +1,7 @@
 export default {
   translation: {
     feedBack: 'RSS успешно загружен',
-    required: 'Поле должно быть заполнено',
+    required: 'Не должно быть пустым',
     url: 'Ссылка должна быть валидным URL',
     notOneOf: 'RSS уже существует',
     parseError: 'Ресурс не содержит валидный RSS',
