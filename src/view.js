@@ -116,13 +116,14 @@ export default (state, elements, i18nextInstance) => {
             break;
           }
           case 'processing': {
+            input.setAttribute('readonly', 'readonly');
             feedback.classList.remove('text-danger');
             feedback.classList.add('text-success');
             feedback.textContent = i18nextInstance.t('loading');
-            console.log(feedback.innerText);
             break;
           }
           case 'finished': {
+            input.removeAttribute('readonly');
             input.classList.remove('is-invalid');
             feedback.classList.remove('text-danger');
             feedback.classList.add('text-success');
