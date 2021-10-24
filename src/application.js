@@ -98,7 +98,7 @@ export default (i18nextInstance) => {
         watchedState.form.error = 'netError';
         watchedState.form.processState = 'filling';
         watchedState.form.valid = false;
-        throw new Error('Network response was not ok.');
+        // throw new Error('Network response was not ok.');
       });
   });
 
