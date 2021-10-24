@@ -10,6 +10,7 @@ export default (state, elements, i18nextInstance) => {
   const modalFooter = document.getElementsByClassName('modal-footer')[0];
   const modalButton = modalFooter.getElementsByClassName('btn')[0];
   const input = document.getElementById('url-input');
+  const submitButton = document.getElementById('submit');
 
   const createPost = (title, href) => {
     const li = document.createElement('li');
@@ -111,6 +112,7 @@ export default (state, elements, i18nextInstance) => {
       case 'form.processState':
         switch (value) {
           case 'filling': {
+            submitButton.disabled = false;
             feedback.classList.remove('text-danger');
             feedback.classList.add('text-success');
             break;
@@ -120,9 +122,11 @@ export default (state, elements, i18nextInstance) => {
             feedback.classList.remove('text-danger');
             feedback.classList.add('text-success');
             feedback.textContent = i18nextInstance.t('loading');
+            submitButton.disabled = true;
             break;
           }
           case 'finished': {
+            submitButton.disabled = false;
             input.removeAttribute('readonly');
             input.classList.remove('is-invalid');
             feedback.classList.remove('text-danger');
