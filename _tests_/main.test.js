@@ -33,7 +33,7 @@ test('input valid url must seccess', async () => {
   nock('https://hexlet-allorigins.herokuapp.com').defaultReplyHeaders({
     'access-control-allow-origin': '*',
     'access-control-allow-credentials': 'true',
-  }).get('/get?url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss')
+  }).get('/get?disableCache=true&url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss')
     .reply(200, hexletData);
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
   userEvent.click(screen.getByText('Добавить'));
@@ -45,7 +45,7 @@ test('modal window works correctly', async () => {
   nock('https://hexlet-allorigins.herokuapp.com').defaultReplyHeaders({
     'access-control-allow-origin': '*',
     'access-control-allow-credentials': 'true',
-  }).get('/get?url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss')
+  }).get('/get?disableCache=true&url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss')
     .reply(200, hexletData);
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
   userEvent.click(screen.getByText('Добавить'));
@@ -63,7 +63,7 @@ test('input valid url without Rss must show: "Ресурс не содержит
   nock('https://hexlet-allorigins.herokuapp.com').defaultReplyHeaders({
     'access-control-allow-origin': '*',
     'access-control-allow-credentials': 'true',
-  }).get('/get?url=https%3A%2F%2Fgoogle.com')
+  }).get('/get?disableCache=true&url=https%3A%2F%2Fgoogle.com')
     .reply(200, { gg: '<rg>' });
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://google.com');
   userEvent.click(screen.getByText('Добавить'));
@@ -74,7 +74,7 @@ test('input valid url 2 times must show messege: "Фид был добавлен
   nock('https://hexlet-allorigins.herokuapp.com').defaultReplyHeaders({
     'access-control-allow-origin': '*',
     'access-control-allow-credentials': 'true',
-  }).get('/get?url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss')
+  }).get('/get?disableCache=true&url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss')
     .reply(200, hexletData);
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://ru.hexlet.io/lessons.rss');
   userEvent.click(screen.getByText('Добавить'));
@@ -88,7 +88,7 @@ test('must show messege: "Ошибка сети", if axios wasn\'t ok', async ()
   nock('https://hexlet-allorigins.herokuapp.com').defaultReplyHeaders({
     'access-control-allow-origin': '*',
     'access-control-allow-credentials': 'true',
-  }).get('/get?url=https%3A%2F%2Fyandex.ru')
+  }).get('/get?disableCache=true&url=https%3A%2F%2Fyandex.ru')
     .reply(404, { gg: '<rg>' });
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://yandex.ru');
   userEvent.click(screen.getByText('Добавить'));

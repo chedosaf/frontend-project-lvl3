@@ -41,7 +41,7 @@ export default (i18nextInstance) => {
 
   const makeUpdates = (stat) => {
     if (stat.feeds.length > 0) {
-      const feedsUrls = stat.feeds.map(({ id }) => `https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(id)}`);
+      const feedsUrls = stat.feeds.map(({ id }) => `https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url=${encodeURIComponent(id)}`);
       const promises = feedsUrls.map((res) => axios.get(res));
       Promise.allSettled(promises).then((responses) => {
         responses.forEach((response, index) => {
@@ -77,7 +77,7 @@ export default (i18nextInstance) => {
       return;
     }
 
-    axios.get(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(formData.get('url'))}`) // валидация на содержание RSS!!!
+    axios.get(`https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url=${encodeURIComponent(formData.get('url'))}`) // валидация на содержание RSS!!!
       .then((response) => response.data)
       .then((data) => {
         const parsedData = parse(data.contents);
