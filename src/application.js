@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import axios from 'axios';
 import parse from './parser';
 import view from './view';
 import validate from './validation';
@@ -41,18 +42,17 @@ export default (i18nextInstance) => {
   const makeUpdates = (stat) => {
     if (stat.feeds.length > 0) {
       const feedsUrls = stat.feeds.map(({ id }) => `https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(id)}`);
-      const promises = feedsUrls.map((res) => fetch(res));
+      const promises = feedsUrls.map((res) => axios.get(res));
       Promise.allSettled(promises).then((responses) => {
         responses.forEach((response, index) => {
-          if (!response.value.ok) throw new Error('Network response was not ok.');
-          return response.value.json().then((json) => {
-            const newFeed = parse(json.contents);
-            const oldFeed = watchedState.feeds[index];
-            const oldPosts = watchedState.posts.filter(({ feedId }) => feedId === oldFeed.id);
-            const getNewPosts = (newPosts, prevPosts) => _.differenceBy(newPosts, prevPosts, 'link');
-            const newPosts = getNewPosts(newFeed.posts, oldPosts).map(addIdToPost(oldFeed.id));
-            watchedState.posts = state.posts.concat(newPosts);
-          });
+          console.log(response.value.statusText);
+          if (response.value.statusText !== 'OK') throw new Error('Network response was not ok.');
+          const newFeed = parse(response.value.data.contents);
+          const oldFeed = watchedState.feeds[index];
+          const oldPosts = watchedState.posts.filter(({ feedId }) => feedId === oldFeed.id);
+          const getNewPosts = (newPosts, prevPosts) => _.differenceBy(newPosts, prevPosts, 'link');
+          const newPosts = getNewPosts(newFeed.posts, oldPosts).map(addIdToPost(oldFeed.id));
+          watchedState.posts = state.posts.concat(newPosts);
         });
       });
     }
@@ -77,8 +77,8 @@ export default (i18nextInstance) => {
       return;
     }
 
-    fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(formData.get('url'))}`) // валидация на содержание RSS!!!
-      .then((response) => response.json())
+    axios.get(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(formData.get('url'))}`) // валидация на содержание RSS!!!
+      .then((response) => response.data)
       .then((data) => {
         const parsedData = parse(data.contents);
         if (parsedData === null) {
@@ -93,7 +93,8 @@ export default (i18nextInstance) => {
           watchedState.form.processState = 'finished';
           watchedState.form.valid = true;
         }
-      }).catch(() => {
+      }).catch((err) => {
+        console.log(err);
         watchedState.form.error = 'netError';
         watchedState.form.processState = 'filling';
         watchedState.form.valid = false;
