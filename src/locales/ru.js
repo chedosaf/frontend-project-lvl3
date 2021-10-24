@@ -3,7 +3,7 @@ export default {
     feedBack: 'RSS успешно загружен',
     required: 'Поле должно быть заполнено',
     url: 'URL должен быть рабочим',
-    notOneOf: 'Фид был добавлен ранее',
+    notOneOf: 'RSS уже существует',
     parseError: 'Ресурс не содержит валидный RSS',
     show: 'Просмотр',
     loading: 'Загрузка...',
