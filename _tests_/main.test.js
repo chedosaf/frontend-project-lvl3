@@ -1,4 +1,4 @@
-// eslint-disable testing-library/no-dom-import;
+// eslint-disable-next-line;
 import {
   screen,
 } from '@testing-library/dom';
