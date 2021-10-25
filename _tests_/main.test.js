@@ -1,12 +1,9 @@
-// eslint-disable-next-line;
 import {
   screen,
 } from '@testing-library/dom';
-// eslint-disable-next-line;
 import '@testing-library/jest-dom/extend-expect';
 import path from 'path';
 import fs from 'fs';
-// eslint-disable-next-line;
 import userEvent from '@testing-library/user-event';
 import nock from 'nock';
 import init from '../src/init.js';
