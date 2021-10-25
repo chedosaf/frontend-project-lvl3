@@ -85,9 +85,10 @@ export default (state, elements, i18nextInstance) => {
           btn.setAttribute('data-bs-target', '#modal');
           btn.addEventListener('click', () => {
             const li = btn.closest('.list-group-item');
-            const a = btn.closest('a');
+            const a = btn.previousSibling;
             li.classList.remove('fw-bold');
-            a.classList.add('fw-bold');
+            a.classList.remove('fw-bold');
+            console.log(a);
             li.classList.add('fw-normal');
             modalTitle.textContent = state.posts.filter((p) => p.link === btn.previousElementSibling
               .href)[0]
