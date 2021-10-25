@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npx jest"
   },
-  "eslintIgnore": ["import from @testing-library/react"],
+  "eslintIgnore": ["import from @testing-library"],
   "jest": {
     "moduleNameMapper": {
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
