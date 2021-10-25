@@ -19,10 +19,11 @@ export default (state, elements, i18nextInstance) => {
     const linkText = document.createTextNode(title);
     const button = document.createElement('button');
     button.setAttribute('type', 'button');
-    button.classList.add('btn', 'btn-primary', 'fw-bold');
+    button.classList.add('btn', 'btn-primary');
     const buttonText = document.createTextNode(i18nextInstance.t('show'));
     button.append(buttonText);
     a.setAttribute('href', href);
+    a.classList.add('fw-bold');
     a.append(linkText);
     li.append(a);
     li.append(button);
