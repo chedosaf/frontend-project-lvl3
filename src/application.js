@@ -102,5 +102,5 @@ export default (i18nextInstance) => {
       });
   });
 
-  makeUpdates(watchedState);
+  // makeUpdates(watchedState);
 };
