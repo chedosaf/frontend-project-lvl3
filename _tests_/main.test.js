@@ -1,3 +1,5 @@
+// eslint-disable testing-library/no-dom-import;
+
 import {
   screen,
 } from '@testing-library/dom';
