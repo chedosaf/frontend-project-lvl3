@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npx jest"
   },
-  "eslintIgnore": ["import from DOM Testing Library is restricted, import from @testing-library/react instead  testing-library/no-dom-import"],
+  "eslintIgnore": ["import from @testing-library/react"],
   "jest": {
     "moduleNameMapper": {
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
