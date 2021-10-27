@@ -78,7 +78,7 @@ test('input valid url 2 times must show messege: "Фид был добавлен
 
 test('must show messege: "Ошибка сети", if axios wasn\'t ok', async () => {
   nockForCors.get('/get?disableCache=true&url=https%3A%2F%2Fyandex.ru')
-    .reply(404, { something: 'something' });
+    .reply(404, { something: 'some' });
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://yandex.ru');
   userEvent.click(screen.getByText('Добавить'));
   expect(await screen.findByText(ru.translation.netError)).toBeInTheDocument();
