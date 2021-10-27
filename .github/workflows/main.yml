@@ -1,0 +1,33 @@
+
+name: jest-test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          check-latest: true
+      - run: make install
+      
+      - name: Run jest test
+        run: make test
+      
+      - name: Test & publish code coverage
+        # Publish code coverage on Code Climate
+        # https://github.com/paambaati/codeclimate-action
+        uses: paambaati/codeclimate-action@v2.7.4
+        # Add Code Climate secret key
+        env:
+          CC_TEST_REPORTER_ID: 4eafa442f55436d585e8e34873330fc8c83d15286026ee2333335c598c20e86a
+        with:
+          coverageCommand: make test-coverage
+          debug: true
