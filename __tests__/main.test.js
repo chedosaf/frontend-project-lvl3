@@ -8,7 +8,7 @@ import fs from 'fs';
 import userEvent from '@testing-library/user-event';
 import nock from 'nock';
 import init from '../src/init.js';
-import hexletData from '../_fixtures_/hexlet-data';
+import hexletData from '../__fixtures__/hexlet-data';
 import ru from '../src/locales/ru';
 
 const index = path.join(__dirname, '..', 'index.html');
@@ -78,7 +78,7 @@ test('input valid url 2 times must show messege: "Фид был добавлен
 
 test('must show messege: "Ошибка сети", if axios wasn\'t ok', async () => {
   nockForCors.get('/get?disableCache=true&url=https%3A%2F%2Fyandex.ru')
-    .reply(404, { something: 'some' });
+    .reply(404);
   userEvent.type(screen.getByRole('textbox', { name: 'url' }), 'https://yandex.ru');
   userEvent.click(screen.getByText('Добавить'));
   expect(await screen.findByText(ru.translation.netError)).toBeInTheDocument();

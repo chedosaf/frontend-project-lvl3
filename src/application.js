@@ -1,11 +1,23 @@
 import _ from 'lodash';
 import axios from 'axios';
+import * as yup from 'yup';
 import parse from './parser';
 import view from './view';
-import validate from './validation';
 
-export default (i18nextInstance) => {
-  const state = {
+const validate = (fields, feedsIds) => {
+  const schema = yup.string()
+    .notOneOf(feedsIds).required();
+  try {
+    schema.validateSync(fields, { abortEarly: false });
+
+    return null;
+  } catch (e) {
+    return e.errors[0].key;
+  }
+};
+
+const startApp = (i18nextInstance) => {
+  const defaultState = {
     form: {
       fields: {
         url: '',
@@ -37,7 +49,7 @@ export default (i18nextInstance) => {
     description: parsedData.description,
   });
 
-  const watchedState = view(state, elements, i18nextInstance);
+  const watchedState = view(defaultState, elements, i18nextInstance);
 
   const makeUpdates = (stat) => {
     if (stat.feeds.length > 0) {
@@ -50,9 +62,8 @@ export default (i18nextInstance) => {
           const newFeed = parse(response.value.data.contents);
           const oldFeed = watchedState.feeds[index];
           const oldPosts = watchedState.posts.filter(({ feedId }) => feedId === oldFeed.id);
-          const getNewPosts = (newPosts, prevPosts) => _.differenceBy(newPosts, prevPosts, 'link');
-          const newPosts = getNewPosts(newFeed.posts, oldPosts).map(addIdToPost(oldFeed.id));
-          watchedState.posts = state.posts.concat(newPosts);
+          const newPosts = _.differenceBy(newFeed.posts, oldPosts, 'link').map(addIdToPost(oldFeed.id));
+          watchedState.posts = defaultState.posts.concat(newPosts);
         });
       });
     }
@@ -60,7 +71,7 @@ export default (i18nextInstance) => {
   };
 
   input.addEventListener('input', () => {
-    state.form.processState = 'filling';
+    defaultState.form.processState = 'filling';
   });
 
   form.addEventListener('submit', (e) => {
@@ -103,3 +114,5 @@ export default (i18nextInstance) => {
 
   makeUpdates(watchedState);
 };
+
+export default startApp;

@@ -3,7 +3,7 @@ import onChange from 'on-change';
 export default (state, elements, i18nextInstance) => {
   const postElement = document.getElementsByClassName('posts');
   const postAndFeedsBodys = document.getElementsByClassName('card-body');
-  const modalTitle = document.getElementsByClassName('modal-title')[0];
+  const modalTitle = document.querySelector('h5');
   const modalBody = document.getElementsByClassName('modal-body')[0];
   const feedback = document.getElementsByClassName('feedback')[0];
   const btns = postElement[0].getElementsByClassName('btn');
