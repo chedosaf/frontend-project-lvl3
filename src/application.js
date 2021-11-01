@@ -6,6 +6,7 @@ import view from './view';
 
 const validate = (fields, feedsIds) => {
   const schema = yup.string()
+    .url()
     .notOneOf(feedsIds).required();
   try {
     schema.validateSync(fields, { abortEarly: false });
