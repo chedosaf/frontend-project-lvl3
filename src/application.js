@@ -79,6 +79,11 @@ const startApp = (i18nextInstance) => {
   });
 
   posts.addEventListener('click', (event) => {
+    const li = event.target.closest('.list-group-item');
+    const a = event.target.previousSibling;
+    li.classList.remove('fw-bold');
+    a.classList.remove('fw-bold');
+    li.classList.add('fw-normal');
     watchedState.id = event.target.dataset.id;
   });
 
