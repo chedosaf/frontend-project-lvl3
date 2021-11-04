@@ -36,8 +36,6 @@ const startApp = (i18nextInstance) => {
   const feeds = document.querySelector('.feeds');
   const posts = document.querySelector('.posts');
   const input = document.querySelector('#url-input');
-  // const pos = document.getElementsByClassName('posts')[0];
-  // // const btns = pos.getElementsByClassName('.btn');
 
   const elements = {
     form,

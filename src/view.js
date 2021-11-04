@@ -4,7 +4,6 @@ export default (state, elements, i18nextInstance) => {
   const modalTitle = document.querySelector('.modal-title');
   const modalBody = document.querySelector('.modal-body');
   const feedback = document.querySelector('.feedback');
-  // let btns = null; // i don't like
   const modalButton = document.querySelector('.modal-footer .btn');
   const input = document.querySelector('#url-input');
   const submitButton = document.querySelector('#submit');
@@ -41,7 +40,7 @@ export default (state, elements, i18nextInstance) => {
       const post = createPost(title, link);
       ul.append(post);
     });
-    const addedPosts = document.createElement('div'); // is a node
+    const addedPosts = document.createElement('div');
     const h2 = document.createElement('h2');
     h2.textContent = 'Посты';
     h2.classList.add('card-title', 'h4');
@@ -91,18 +90,6 @@ export default (state, elements, i18nextInstance) => {
         break;
       case 'posts':
         document.querySelector('.posts div').replaceWith(createPosts(state.posts));
-        // btns = document.querySelectorAll('.posts .btn');
-        // [...btns].forEach((btn) => {
-        //   btn.setAttribute('data-bs-toggle', 'modal');
-        //   btn.setAttribute('data-bs-target', '#modal');
-        // btn.addEventListener('click', () => {
-        // const li = btn.closest('.list-group-item');
-        // const a = btn.previousSibling;
-        // li.classList.remove('fw-bold');
-        // a.classList.remove('fw-bold');
-        // li.classList.add('fw-normal');
-        // });
-        // });
         break;
       case 'id':
         modalTitle.textContent = state.posts.filter((p) => p.link === state.id)[0]
