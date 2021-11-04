@@ -29,12 +29,16 @@ const startApp = (i18nextInstance) => {
     },
     feeds: [],
     posts: [],
+    id: '',
   };
 
-  const form = document.getElementsByClassName('rss-form')[0];
-  const feeds = document.getElementsByClassName('feeds')[0];
-  const posts = document.getElementsByClassName('posts')[0];
-  const input = document.getElementById('url-input');
+  const form = document.querySelector('.rss-form');
+  const feeds = document.querySelector('.feeds');
+  const posts = document.querySelector('.posts');
+  const input = document.querySelector('#url-input');
+  // const pos = document.getElementsByClassName('posts')[0];
+  // // const btns = pos.getElementsByClassName('.btn');
+
   const elements = {
     form,
     feeds,
@@ -58,7 +62,6 @@ const startApp = (i18nextInstance) => {
       const promises = feedsUrls.map((res) => axios.get(res));
       Promise.allSettled(promises).then((responses) => {
         responses.forEach((response, index) => {
-          console.log(response.value.statusText);
           if (response.value.statusText !== 'OK') throw new Error('Network response was not ok.');
           const newFeed = parse(response.value.data.contents);
           const oldFeed = watchedState.feeds[index];
@@ -72,8 +75,19 @@ const startApp = (i18nextInstance) => {
   };
 
   input.addEventListener('input', () => {
-    defaultState.form.processState = 'filling';
+    watchedState.form.processState = 'filling';
   });
+
+  posts.addEventListener('click', (event) => {
+    watchedState.id = event.target.dataset.id;
+  });
+
+  const makeCorsLink = (link) => {
+    const url = new URL('get', 'https://hexlet-allorigins.herokuapp.com/');
+    url.searchParams.set('disableCache', true);
+    url.searchParams.set('url', link);
+    return url.href;
+  };
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -88,8 +102,7 @@ const startApp = (i18nextInstance) => {
       watchedState.form.processState = 'filling';
       return;
     }
-
-    axios.get(`https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url=${encodeURIComponent(formData.get('url'))}`) // валидация на содержание RSS!!!
+    axios.get(makeCorsLink(formData.get('url')))
       .then((response) => response.data)
       .then((data) => {
         const parsedData = parse(data.contents);
@@ -105,8 +118,7 @@ const startApp = (i18nextInstance) => {
           watchedState.form.processState = 'finished';
           watchedState.form.valid = true;
         }
-      }).catch((err) => {
-        console.log(err);
+      }).catch(() => {
         watchedState.form.error = 'netError';
         watchedState.form.processState = 'filling';
         watchedState.form.valid = false;
