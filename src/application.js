@@ -2,7 +2,7 @@ import _ from 'lodash';
 import axios from 'axios';
 import * as yup from 'yup';
 import parse from './parser';
-import view from './view';
+import declareWatchedState from './view';
 
 const validate = (fields, feedsIds) => {
   const schema = yup.string()
@@ -53,7 +53,7 @@ const startApp = (i18nextInstance) => {
     description: parsedData.description,
   });
 
-  const watchedState = view(defaultState, elements, i18nextInstance); // view bad
+  const watchedState = declareWatchedState(defaultState, elements, i18nextInstance); // view bad
 
   const makeCorsLink = (link) => {
     const url = new URL('get', 'https://hexlet-allorigins.herokuapp.com/');

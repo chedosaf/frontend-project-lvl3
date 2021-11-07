@@ -102,7 +102,7 @@ export default (state, elements, i18nextInstance) => {
     modalButton.href = state.activePostId;
   };
 
-  const updateFeedback = (value) => {
+  const changeFeedbackColor = (value) => {
     if (value === true) {
       elements.input.classList.remove('is-invalid');
       feedback.classList.remove('text-danger');
@@ -163,7 +163,7 @@ export default (state, elements, i18nextInstance) => {
         openModal();
         break;
       case 'form.valid':
-        updateFeedback(value);
+        changeFeedbackColor(value);
         break;
       case 'form.processState':
         updateProcces(value);
