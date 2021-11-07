@@ -29,7 +29,8 @@ const startApp = (i18nextInstance) => {
     },
     feeds: [],
     posts: [],
-    id: '',
+    activePostId: '',
+    watchedPostsIds: [],
   };
 
   const form = document.querySelector('.rss-form');
@@ -52,11 +53,18 @@ const startApp = (i18nextInstance) => {
     description: parsedData.description,
   });
 
-  const watchedState = view(defaultState, elements, i18nextInstance);
+  const watchedState = view(defaultState, elements, i18nextInstance); // view bad
 
-  const makeUpdates = (stat) => {
+  const makeCorsLink = (link) => {
+    const url = new URL('get', 'https://hexlet-allorigins.herokuapp.com/');
+    url.searchParams.set('disableCache', true);
+    url.searchParams.set('url', link);
+    return url.toString();
+  };
+
+  const fetchNewPost = (stat) => {
     if (stat.feeds.length > 0) {
-      const feedsUrls = stat.feeds.map(({ id }) => `https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url=${encodeURIComponent(id)}`);
+      const feedsUrls = stat.feeds.map(({ id }) => makeCorsLink(id));
       const promises = feedsUrls.map((res) => axios.get(res));
       Promise.allSettled(promises).then((responses) => {
         responses.forEach((response, index) => {
@@ -69,7 +77,7 @@ const startApp = (i18nextInstance) => {
         });
       });
     }
-    setTimeout(() => makeUpdates(stat), 5000);
+    setTimeout(() => fetchNewPost(stat), 5000);
   };
 
   input.addEventListener('input', () => {
@@ -77,20 +85,9 @@ const startApp = (i18nextInstance) => {
   });
 
   posts.addEventListener('click', (event) => {
-    const li = event.target.closest('.list-group-item');
-    const a = event.target.previousSibling;
-    li.classList.remove('fw-bold');
-    a.classList.remove('fw-bold');
-    li.classList.add('fw-normal');
-    watchedState.id = event.target.dataset.id;
+    watchedState.activePostId = event.target.dataset.id;
+    watchedState.watchedPostsIds.push(event.target.dataset.id);
   });
-
-  const makeCorsLink = (link) => {
-    const url = new URL('get', 'https://hexlet-allorigins.herokuapp.com/');
-    url.searchParams.set('disableCache', true);
-    url.searchParams.set('url', link);
-    return url.href;
-  };
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -109,26 +106,26 @@ const startApp = (i18nextInstance) => {
       .then((response) => response.data)
       .then((data) => {
         const parsedData = parse(data.contents);
-        if (parsedData === null) {
+        const feed = makeFeed(formData.get('url'), parsedData);
+        watchedState.feeds.push(feed);
+        const feedPosts = parsedData.posts.map(addIdToPost(feed.id));
+        watchedState.posts.push(...feedPosts);
+        watchedState.form.processState = 'finished';
+        watchedState.form.valid = true;
+      }).catch((err) => {
+        if (err.message === 'Parser Error') {
           watchedState.form.error = 'parseError';
           watchedState.form.processState = 'filling';
           watchedState.form.valid = false;
         } else {
-          const feed = makeFeed(formData.get('url'), parsedData);
-          watchedState.feeds.push(feed);
-          const feedPosts = parsedData.posts.map(addIdToPost(feed.id));
-          watchedState.posts.push(...feedPosts);
-          watchedState.form.processState = 'finished';
-          watchedState.form.valid = true;
+          watchedState.form.error = 'netError';
+          watchedState.form.processState = 'filling';
+          watchedState.form.valid = false;
         }
-      }).catch(() => {
-        watchedState.form.error = 'netError';
-        watchedState.form.processState = 'filling';
-        watchedState.form.valid = false;
       });
   });
 
-  makeUpdates(watchedState);
+  fetchNewPost(watchedState);
 };
 
 export default startApp;
