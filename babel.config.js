@@ -4,7 +4,10 @@ module.exports = {
       '@babel/preset-env',
       {
         targets: {
-          chrome: '95',
+          browsers: [
+            ' > 5%',
+            'not dead',
+          ],
         },
       },
     ],
