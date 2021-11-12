@@ -85,13 +85,12 @@ export default (state, elements, i18nextInstance) => {
     return addedFeeds;
   };
 
-  const create = {
-    feeds: createFeeds,
-    posts: createPosts,
+  const updatePosts = () => {
+    document.querySelector('.posts div').replaceWith(createPosts(state.posts));
   };
 
-  const updateDiv = (div) => {
-    document.querySelector(`.${div} div`).replaceWith(create[div](state[div]));
+  const updateFeeds = () => {
+    document.querySelector('.feeds div').replaceWith(createFeeds(state.feeds));
   };
 
   const openModal = () => {
@@ -103,7 +102,7 @@ export default (state, elements, i18nextInstance) => {
   };
 
   const changeFeedbackColor = (value) => {
-    if (value === true) {
+    if (value) {
       elements.input.classList.remove('is-invalid');
       feedback.classList.remove('text-danger');
       feedback.classList.add('text-success');
@@ -117,7 +116,7 @@ export default (state, elements, i18nextInstance) => {
     }
   };
 
-  const updateProcces = (value) => {
+  const updateProcessState = (value) => {
     switch (value) {
       case 'filling': {
         submitButton.disabled = false;
@@ -151,13 +150,13 @@ export default (state, elements, i18nextInstance) => {
   const watchedState = onChange(state, (path, value) => {
     switch (path) {
       case 'feeds':
-        updateDiv('feeds');
+        updateFeeds();
         break;
       case 'posts':
-        updateDiv('posts');
+        updatePosts();
         break;
       case 'watchedPostsIds':
-        updateDiv('posts');
+        updatePosts();
         break;
       case 'activePostId':
         openModal();
@@ -166,7 +165,7 @@ export default (state, elements, i18nextInstance) => {
         changeFeedbackColor(value);
         break;
       case 'form.processState':
-        updateProcces(value);
+        updateProcessState(value);
         break;
       default:
         break;

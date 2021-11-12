@@ -55,16 +55,16 @@ const startApp = (i18nextInstance) => {
 
   const watchedState = declareWatchedState(defaultState, elements, i18nextInstance); // view bad
 
-  const makeCorsLink = (link) => {
+  const buildUrl = (link) => {
     const url = new URL('get', 'https://hexlet-allorigins.herokuapp.com/');
     url.searchParams.set('disableCache', true);
     url.searchParams.set('url', link);
     return url.toString();
   };
 
-  const fetchNewPost = (stat) => {
+  const fetchNewPosts = (stat) => {
     if (stat.feeds.length > 0) {
-      const feedsUrls = stat.feeds.map(({ id }) => makeCorsLink(id));
+      const feedsUrls = stat.feeds.map(({ id }) => buildUrl(id));
       const promises = feedsUrls.map((res) => axios.get(res));
       Promise.allSettled(promises).then((responses) => {
         responses.forEach((response, index) => {
@@ -77,7 +77,7 @@ const startApp = (i18nextInstance) => {
         });
       });
     }
-    setTimeout(() => fetchNewPost(stat), 5000);
+    setTimeout(() => fetchNewPosts(stat), 5000);
   };
 
   input.addEventListener('input', () => {
@@ -102,7 +102,7 @@ const startApp = (i18nextInstance) => {
       watchedState.form.processState = 'filling';
       return;
     }
-    axios.get(makeCorsLink(formData.get('url')))
+    axios.get(buildUrl(formData.get('url')))
       .then((response) => response.data)
       .then((data) => {
         const parsedData = parse(data.contents);
@@ -125,7 +125,7 @@ const startApp = (i18nextInstance) => {
       });
   });
 
-  fetchNewPost(watchedState);
+  fetchNewPosts(watchedState);
 };
 
 export default startApp;
