@@ -2,7 +2,9 @@ export default (xmlData) => {
   const parser = new DOMParser();
   const text = parser.parseFromString(xmlData, 'text/xml');
   if (text.querySelector('parsererror')) {
-    throw new Error('Parser Error');
+    const error = new Error('Parser Error');
+    error.type = 'Parser Error';
+    throw error;
   }
   const feedTitle = text.querySelector('title');
   const title = feedTitle.textContent;

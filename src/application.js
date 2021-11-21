@@ -21,16 +21,16 @@ const startApp = (i18nextInstance) => {
   const defaultState = {
     form: {
       fields: {
-        url: '',
+        url: null,
       },
       processState: 'filling',
       valid: true,
-      error: '',
+      error: null,
     },
     feeds: [],
     posts: [],
-    activePostId: '',
-    watchedPostsIds: [],
+    activePostId: null,
+    watchedPostsIds: new Set([]),
   };
 
   const form = document.querySelector('.rss-form');
@@ -53,7 +53,7 @@ const startApp = (i18nextInstance) => {
     description: parsedData.description,
   });
 
-  const watchedState = declareWatchedState(defaultState, elements, i18nextInstance); // view bad
+  const watchedState = declareWatchedState(defaultState, elements, i18nextInstance);
 
   const buildUrl = (link) => {
     const url = new URL('get', 'https://hexlet-allorigins.herokuapp.com/');
@@ -68,7 +68,6 @@ const startApp = (i18nextInstance) => {
       const promises = feedsUrls.map((res) => axios.get(res));
       Promise.allSettled(promises).then((responses) => {
         responses.forEach((response, index) => {
-          if (response.value.statusText !== 'OK') throw new Error('Network response was not ok.');
           const newFeed = parse(response.value.data.contents);
           const oldFeed = watchedState.feeds[index];
           const oldPosts = watchedState.posts.filter(({ feedId }) => feedId === oldFeed.id);
@@ -85,8 +84,10 @@ const startApp = (i18nextInstance) => {
   });
 
   posts.addEventListener('click', (event) => {
-    watchedState.activePostId = event.target.dataset.id;
-    watchedState.watchedPostsIds.push(event.target.dataset.id);
+    if (event.target.dataset.id) {
+      watchedState.activePostId = event.target.dataset.id;
+      watchedState.watchedPostsIds.add(event.target.dataset.id);
+    }
   });
 
   form.addEventListener('submit', (e) => {
@@ -96,7 +97,7 @@ const startApp = (i18nextInstance) => {
     const validateStatus = validate(formData.get('url').toLowerCase().trim(), watchedState.feeds.map((feed) => feed.id));
     if (validateStatus === null) {
       watchedState.form.processState = 'processing';
-    } if (validateStatus !== null) {
+    } else {
       watchedState.form.error = validateStatus;
       watchedState.form.valid = false;
       watchedState.form.processState = 'filling';
@@ -113,14 +114,16 @@ const startApp = (i18nextInstance) => {
         watchedState.form.processState = 'finished';
         watchedState.form.valid = true;
       }).catch((err) => {
-        if (err.message === 'Parser Error') {
+        if (err.type === 'Parser Error') {
           watchedState.form.error = 'parseError';
           watchedState.form.processState = 'filling';
           watchedState.form.valid = false;
-        } else {
+        } else if (err.request) {
           watchedState.form.error = 'netError';
           watchedState.form.processState = 'filling';
           watchedState.form.valid = false;
+        } else {
+          console.log(err.message);
         }
       });
   });

@@ -13,7 +13,7 @@ const init = () => {
   });
 
   const i18nextInstance = i18next.createInstance();
-  i18nextInstance.init({
+  return i18nextInstance.init({
     lng: 'ru',
     debug: true,
     resources,

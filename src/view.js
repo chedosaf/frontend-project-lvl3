@@ -22,7 +22,7 @@ export default (state, elements, i18nextInstance) => {
     const buttonText = document.createTextNode(i18nextInstance.t('show'));
     button.append(buttonText);
     a.setAttribute('href', href);
-    if (state.watchedPostsIds.includes(href)) {
+    if (state.watchedPostsIds.has(href)) {
       a.classList.add('fw-normal');
     } else {
       a.classList.add('fw-bold');
@@ -45,7 +45,7 @@ export default (state, elements, i18nextInstance) => {
     });
     const addedPosts = document.createElement('div');
     const h2 = document.createElement('h2');
-    h2.textContent = 'Посты';
+    h2.textContent = i18nextInstance.t('posts');
     h2.classList.add('card-title', 'h4');
     addedPosts.appendChild(h2);
     addedPosts.appendChild(ul);
@@ -78,7 +78,7 @@ export default (state, elements, i18nextInstance) => {
     });
     const addedFeeds = document.createElement('div');
     const h2 = document.createElement('h2');
-    h2.textContent = 'Фиды';
+    h2.textContent = i18nextInstance.t('feeds');
     h2.classList.add('card-title', 'h4');
     addedFeeds.appendChild(h2);
     addedFeeds.appendChild(ul);
@@ -94,10 +94,8 @@ export default (state, elements, i18nextInstance) => {
   };
 
   const openModal = () => {
-    modalTitle.textContent = state.posts.filter((p) => p.link === state.activePostId)[0]
-      .title;
-    modalBody.textContent = state.posts.filter((p) => p.link === state.activePostId)[0]
-      .description;
+    modalTitle.textContent = state.posts.find((p) => p.link === state.activePostId).title;
+    modalBody.textContent = state.posts.find((p) => p.link === state.activePostId).description;
     modalButton.href = state.activePostId;
   };
 

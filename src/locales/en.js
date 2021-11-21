@@ -1,5 +1,7 @@
 export default {
   translation: {
+    feeds: 'Feeds',
+    posts: 'Posts',
     feedBack: 'RSS loaded successfully',
     required: 'This field must be required',
     url: 'URL must be valid',
